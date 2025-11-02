@@ -5,11 +5,40 @@
         <meta name="description" content="A fan site for Riftbound's Core rules with rules and terms linked for easy navigation">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Hyperlinked Riftbound Core Rules</title>
-        <style>html {
+        <style>:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --link-color: #0000ee;
+    --link-visited-color: #551a8b;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --link-color: #7cb3ff;
+    --link-visited-color: #b19cd9;
+}
+
+html {
     font-family: sans-serif;
     font-size: 16px;
     margin: auto;
     max-width: 1024px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+a {
+    color: var(--link-color);
+}
+
+a:visited {
+    color: var(--link-visited-color);
 }
 
 @media (min-width:1025px) {
@@ -164,6 +193,32 @@
             margin-right: 0.5rem;
         }
     }
+}
+
+.dark-mode-toggle {
+    position: fixed;
+    top: 0.25rem;
+    right: 0.25rem;
+    z-index: 2;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 2px solid var(--text-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+}
+
+.dark-mode-toggle:hover {
+    opacity: 1;
+}
+
+[data-theme="dark"] .dark-mode-toggle {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border-color: var(--text-color);
 }</style>
     </head>
     <body>
@@ -175,6 +230,7 @@
             <div>Also take a look at their Tournament Rules at <a target="_blank" rel="noopener noreferrer" href="https://riftbound.leagueoflegends.com/en-us/news/organizedplay/riftbound-tournament-rules/">riftbound.leagueoflegends.com/en-us/news/organizedplay/riftbound-tournament-rules/</a></div>
         </div>
         <div class="top-shortcut"><a href="#">▲</a></div>
+        <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
 <h1 id="reference_index">Reference Index</h1>
 <div class="reference_index">
 <a href="#reference_group_A">A</a>
@@ -9470,5 +9526,28 @@
 </div>
 </div>
 
+    <script>
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const html = document.documentElement;
+
+        const getTheme = () => {
+            const saved = localStorage.getItem('theme');
+            if (saved) return saved;
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+
+        const setTheme = (theme) => {
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            darkModeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        };
+
+        setTheme(getTheme());
+
+        darkModeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+    </script>
     </body>
 </html>
